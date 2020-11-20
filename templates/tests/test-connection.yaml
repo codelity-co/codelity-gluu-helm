@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "codelity-gluu-helm.fullname" . }}-test-connection"
+  labels:
+    {{- include "codelity-gluu-helm.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "codelity-gluu-helm.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
